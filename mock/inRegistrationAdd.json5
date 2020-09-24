@@ -1,0 +1,96 @@
+{
+  "bStatues|1": [
+    {key: "1", value :'初次'},
+    {key: "2", value :'备案'},
+    {key: "3", value :'立项'},
+    {key: "4", value :'投标'}
+  ],
+  bId: "@guid",
+  bFollowStageList: [ //跟进阶段
+    {key: "1", value :'初次登记'},
+    {key: "2", value :'备案登记'},
+    {key: "3", value :'立项登记'},
+    {key: "4", value :'投标决策'}
+  ],
+  bClassificationList: [ //业务分类
+    {key: "1", value: '生态养殖'},
+    {key: "2", value: '非生态养殖'},
+  ],
+  bInDepartmentList: [  //所属部门
+    {key:1,value:'数字科技部'},
+    {key:2,value:'软件开发部'},
+  ],
+  "bMarketHeadList|1-10": [//市场负责人
+    {key: '@increment',value:'@cname'}
+  ],
+  bTypeList:[  //业务类型
+    {key:1,value:'水处理'},
+    {key:2,value:'园林绿化'},
+    {key:3,value:'河道疏浚'},
+    {key:4,value:'智慧水务'},
+    {key:5,value:'农田修复'},
+    {key:6,value:'智慧环保'},
+  ],
+  bProjectModelList:[  //项目模式
+    {key:1,value:'模式1'},
+    {key:2,value:'模式2'},
+    {key:3,value:'模式3'},
+    {key:4,value:'模式4'},
+    {key:5,value:'模式5'},
+    {key:6,value:'模式6'},
+  ],
+  bOwnerCustomerTypeList:[ //客户类型
+    {key:1,value:'业主单位1'},
+    {key:2,value:'业主单位2'},
+    {key:3,value:'业主单位3'},
+    {key:4,value:'业主单位4'},
+  ],
+  "bHelpersList|110": [
+    {key: '@increment',value:'@cname'}
+  ],
+  dataSelectList: [
+    {key: '1',ownerId: 32,ownerName: '@cname',ownerType: '@ctitle(3.8)',},
+    {key: '2',ownerId: 42,ownerName: '@cname',ownerType: '@ctitle(3.8)',},
+    {key: '3',ownerId: 32,ownerName: '@cname',ownerType: '@ctitle(3.8)',},
+    {key: '4',ownerId: 99,ownerName: '@cname',ownerType: '@ctitle(3.8)',},
+  ],
+  bAreaOptions: [
+    {
+      value: 'zhejiang',
+      label: '浙江',
+      children: [
+        {
+          value: 'hangzhou',
+          label: '杭州',
+          children: [
+            {
+              value: 'xihu',
+              label: '西湖',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      value: 'jiangsu',
+      label: '江苏',
+      children: [
+        {
+          value: 'nanjing',
+          label: '南京',
+          children: [
+            {
+              value: 'zhonghuamen',
+              label: '中华门',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  dataSource: [
+    {key: '0',peopleVisibleId: 1,peopleVisibleName: '@cname',peopleAdd: '@cname',addUpdateTime: '@datetime("yyyy-MM-dd HH:mm:ss")'},
+    {key: '1',peopleVisibleId: 2,peopleVisibleName: '@cname',peopleAdd: '@cname',addUpdateTime: '@datetime("yyyy-MM-dd HH:mm:ss")'},
+  ],
+
+}

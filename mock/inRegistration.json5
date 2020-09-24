@@ -1,0 +1,37 @@
+{
+  bInDepartmentList: [  //所属部门
+    {key:1,value:'数字科技部'},
+    {key:2,value:'软件开发部'},
+  ],
+  bProjectModelList:[  //项目模式
+    {key:1,value:'模式1'},
+    {key:2,value:'模式2'},
+    {key:3,value:'模式3'},
+    {key:4,value:'模式4'},
+    {key:5,value:'模式5'},
+    {key:6,value:'模式6'},
+  ],
+  bFollowStageList: [ //跟进阶段
+    {key: "1", value :'初次登记'},
+    {key: "2", value :'备案登记'},
+    {key: "3", value :'立项登记'},
+    {key: "4", value :'投标决策'}
+  ],
+  "bStatuesList": [
+    {key: "1", value :'初次'},
+    {key: "2", value :'备案'},
+    {key: "3", value :'立项'},
+    {key: "4", value :'投标'}
+  ],
+  "dataList|366-1200":[
+    {
+      key: "@id",
+      bID: "@id",
+      bName: "@cname",
+      bProjectModel: "@ctitle(3.8)",
+      bFollowStage: "@ctitle(4)",
+      bStatues: "@ctitle(4)" ,
+      bInDepartment: "@ctitle(4)",
+    },
+  ]
+}
