@@ -56,7 +56,7 @@
                             <a-select v-decorator="['bFollowStage']"
                                       placeholder="请选择项目跟进阶段">
                                 <a-select-option v-for="(item,index) in bFollowStageList"
-                                                 :key="item.key" :value="item.key">
+                                                 :key="item.key" :value="item.value">
                                     {{item.value}}
                                 </a-select-option>
                             </a-select>
@@ -69,7 +69,7 @@
                             <a-select v-decorator="['bClassification',{ rules: [{ required: true, message: '请选择业务分类!' }] },]"
                                       placeholder="请选择">
                                 <a-select-option v-for="(item,index) in bClassificationList"
-                                                 :key="item.key" :value="item.value">
+                                                 :key="item.key" :value="item.key">
                                     {{item.value}}
                                 </a-select-option>
                             </a-select>
@@ -80,7 +80,7 @@
                             <a-select v-decorator="['bInDepartment']"
                                       placeholder="默认当前操作人部门（可更改）">
                                 <a-select-option v-for="(item,index) in bInDepartmentList"
-                                                 :key="item.key" :value="item.value" >
+                                                 :key="item.key" :value="item.key" >
                                     {{item.value}}
                                 </a-select-option>
                             </a-select>
@@ -91,7 +91,7 @@
                             <a-select v-decorator="['bMarketHead',{ rules: [{ required: true, message: '请选择市场负责人!' }] },]"
                                       placeholder="默认当前操作人（可更改）">
                                 <a-select-option  v-for="(item,index) in bMarketHeadList"
-                                                  :key="item.key" :value="item.value" >
+                                                  :key="item.key" :value="item.key" >
                                     {{item.value}}
                                 </a-select-option>
                             </a-select>
@@ -122,7 +122,7 @@
                                       placeholder="请选择（字典值，可多选）"
                                       mode="multiple">
                                 <a-select-option v-for="(item,index) in bTypeList"
-                                                 :key="item.key" :value="item.value">
+                                                 :key="item.key" :value="item.key">
                                     {{item.value}}
                                 </a-select-option>
                             </a-select>
@@ -133,7 +133,7 @@
                             <a-select v-decorator="['bProjectModel']"
                                       placeholder="请选择（字典值）" >
                                 <a-select-option v-for="(item,index) in bProjectModelList"
-                                                 :key="item.key" :value="item.value">
+                                                 :key="item.key" :value="item.key">
                                     {{item.value}}
                                 </a-select-option>
                             </a-select>
@@ -141,7 +141,7 @@
                     </a-col>
                     <a-col :span="6">
                         <a-form-item label="业主单位">
-                            <a-input v-decorator="['bOwner']"
+                            <a-input v-model="bOwnerListNameShow"
                                      placeholder="请选择"
                                      @click="showModal" >
                             </a-input>
@@ -155,7 +155,7 @@
                                       placeholder="请选择（多选）"
                                       mode="multiple">
                                 <a-select-option v-for="(item,index) in bHelpersList"
-                                                 :key="item.key" :value="item.value" >
+                                                 :key="item.key" :value="item.key">
                                     {{item.value}}
                                 </a-select-option>
                             </a-select>
@@ -181,19 +181,22 @@
                         <a-form-item label="项目所在区域">
                             <a-cascader v-decorator="['bArea',{ rules: [{ required: true, message: '请选择项目所在区域!' }] },]"
                                         :options="bAreaOptions"
+                                        @change="getbArea"
                                         placeholder="请选择（省市区）" />
                         </a-form-item>
+
                     </a-col>
                     <a-col :span="6" >
                         <a-form-item label="项目详细地址">
                             <a-input v-decorator="['bAddress',{ rules: [{ required: true, message: '请输入项目详细地址!' }] },]"
+                                     @change="getbAddress"
                                      placeholder="请输入" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="12">
                         <a-form-item label="项目完整地区">
                             <a-input placeholder="自动生成（取[项目所在地]+[项目详细地址]）"
-                                     v-decorator="['bFullLocation']"
+                                     v-model="bFullLocation"
                                      disabled />
                         </a-form-item>
                     </a-col>
@@ -261,7 +264,7 @@
                             <a-form-item label="客户类型" >
                                 <a-select v-decorator="[bOwnerCustomerType]" placeholder="请选择">
                                     <a-select-option v-for="(item,index) in bOwnerCustomerTypeList"
-                                                     :key="item.key" :value="item.value">
+                                                     :key="item.key" :value="item.key">
                                         {{item.value}}
                                     </a-select-option>
                                 </a-select>
@@ -339,6 +342,7 @@
             edit() {
                 this.editable = true;
             },
+
         },
     };
 
@@ -350,6 +354,7 @@
         data() {
             return {
                 bStatus:'',
+                // bStatusList:[],
                 bId:'',
                 bName:'',
                 bFoundDate:'',//商机发现时间
@@ -370,6 +375,9 @@
                 bProjectModel:'', //项目模式
                 bProjectModelList:[],
                 bOwner:'',//业主单位
+                bOwnerList:[],
+                bOwnerListName:[],
+                bOwnerListNameShow:'',
                 bOwnerKeyWord:'',//关键词
                 bOwnerCustomerType:'',//客户类型
                 bOwnerCustomerTypeList:[],
@@ -392,7 +400,7 @@
                 bArea:'',//项目区域
                 bAreaOptions: [],
                 bAddress:'',//详细地址
-                bFullLocation:'',//完整地区
+                // bFullLocation:'',//完整地区
 
                 basicFacts:'',//项目概况
 
@@ -403,14 +411,55 @@
 
             };
         },
+        computed:{
+            bFullLocation:function () {
+                console.log("bFullLocation:function");
+                if(this.bArea !="" && this.bArea !=null && this.bAddress!=""&& this.bAddress!=null){
+                    return this.bArea +this.bAddress;
+                }
+            },
+            rowSelection() {
+                return {
+                    onChange: (selectedRowKeys, selectedRows) => {
+                        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                        this.bOwnerList=selectedRows;
+
+                    },
+                    getCheckboxProps: record => ({
+                        props: {
+                            disabled: record.name === 'Disabled User', // Column configuration not to be checked
+                            name: record.name,
+                        },
+                    }),
+                };
+            },
+        },
         methods:{
+            getbArea(e){
+                console.log(e);
+                this.bArea=e;
+            },
+            getbAddress(e){
+                console.log(e.target.value);
+                this.bAddress = e.target.value;
+            },
+
             //展示弹框
             showModal() {
                 this.visible = true;
                 console.log("showModal")
             },
             handleOk(e) {
-                this.ModalText = 'The modal will be closed after two seconds';
+                console.log("确定");
+                console.log(this.bOwnerList)
+                for (let item in this.bOwnerList) {
+                    console.log(this.bOwnerList[item]);
+                    this.bOwnerListName.push(this.bOwnerList[item].ownerName);
+                }
+                this.bOwnerListNameShow=this.bOwnerListName.toString();
+                console.log(this.bOwnerListName)
+
+                this.ModalText = '弹框即将在两秒后关闭';
                 this.confirmLoading = true;
                 setTimeout(() => {
                     this.visible = false;
@@ -450,10 +499,7 @@
             //表单提交
             handleSubmit(e) {
                 e.preventDefault();
-                console.log('aa',this.aa)
-                // this.aa.forEach=(item)=>{
-                //     //console.log(item.)
-                // }
+                console.log('提交',e);
                 this.form.validateFields((err, values) => {
                     if (!err) {
                         console.log('Received values of form: ', values);
@@ -464,10 +510,11 @@
         },
         created() {
             axios.get('/user/inRegistrationAdd')
-                .then((response)=> {
-                    let result = response.data;
+                .then((res)=> {
+                    console.log("---res",res)
+                    let result = res.data;
                     console.log(result);
-                    this.bStatus = result.bStatus;
+                    this.bStatus = result.bStatusList.value;
                     this.bId = result.bId;
                     this.bFollowStageList = result.bFollowStageList;
                     this.bClassificationList = result.bClassificationList;
@@ -486,21 +533,21 @@
                     console.log(error);
                 })
         },
-        computed: {
-            rowSelection() {
-                return {
-                    onChange: (selectedRowKeys, selectedRows) => {
-                        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                    },
-                    getCheckboxProps: record => ({
-                        props: {
-                            disabled: record.name === 'Disabled User', // Column configuration not to be checked
-                            name: record.name,
-                        },
-                    }),
-                };
-            },
-        }
+        // computed: {
+        //     rowSelection() {
+        //         return {
+        //             onChange: (selectedRowKeys, selectedRows) => {
+        //                 console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        //             },
+        //             getCheckboxProps: record => ({
+        //                 props: {
+        //                     disabled: record.name === 'Disabled User', // Column configuration not to be checked
+        //                     name: record.name,
+        //                 },
+        //             }),
+        //         };
+        //     },
+        // }
     }
 
 

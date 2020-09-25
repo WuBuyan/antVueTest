@@ -144,15 +144,16 @@
             },
         },
         created() {
+            axios.get('/user/navtemp')
+                .then((res,response) => {
+                    console.log(res,response)
+                })
+                .catch(err => {
+                    console.error(err)
+                })
         },
         mounted:function() {
-            axios.get('/user/navtemp')
-            .then(res => {
-                console.log(res)
-            })
-            .catch(err => {
-                console.error(err)
-            })
+
         },
     }
 </script>
